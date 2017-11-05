@@ -25,35 +25,49 @@
 //  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 //  POSSIBILITY OF SUCH DAMAGE.
 
-using DuplicateCheckerLib;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 
-namespace DuplicateCheckerRunner
+namespace DuplicateCheckerLib
 {
-    class Program
+    public class LevenshteinDistance
     {
-        static void Main(string[] args)
+        public static int Get(string left, string right)
         {
-            List<string[]> l = new List<string[]>
-            {
-                new string[]{"Coca Cola", "Coca Cola Ltd."},
-                new string[]{"Method", "Methods"},
-                new string[]{"Potato", "Ketchup"},
-                new string[]{"Potato", "Potato mix"}
-            };
+            int leftLength = left.Length;
+            int rightLength = right.Length;
 
-            Stopwatch stopwatch = new Stopwatch();
-            stopwatch.Start();
-            foreach (string[] a in l)
+            //Build the matrix for both words
+            int[,] matrix = new int[leftLength + 1, rightLength + 1];
+
+            // Base case, return the length of the strings
+            if (leftLength == 0)
+                return rightLength;
+
+            if (rightLength == 0)
+                return leftLength;
+
+            //Populate the first column and first row
+            for (int i = 0; i <= leftLength; i++)
+                matrix[i, 0] = i;
+
+            for (int j = 0; j <= rightLength; j++)
+                matrix[0, j] = j;
+
+            // Calculate the distance
+            for (int i = 1; i <= leftLength; i++)
             {
-                int cost = LevenshteinDistance.Get(a[0], a[1]);
-                Console.WriteLine($"{a[0]} -> {a[1]} = {cost}");
+                //Loop throgh each character
+                for (int j = 1; j <= rightLength; j++)
+                {
+                    // Calculate the cost
+                    int cost = (right[j - 1] == left[i - 1]) ? 0 : 1;
+
+                    // set the value
+                    matrix[i, j] = Math.Min(Math.Min(matrix[i - 1, j] + 1, matrix[i, j - 1] + 1), matrix[i - 1, j - 1] + cost);
+                }
             }
-            stopwatch.Stop();
-            Console.WriteLine("Time elapsed: {0}", stopwatch.Elapsed);
-            Console.ReadKey();
+            // Return the last item that contains the calculation
+            return matrix[leftLength, rightLength];
         }
     }
 }
