@@ -38,10 +38,10 @@ namespace DuplicateCheckerRunner
         {
             List<string[]> l = new List<string[]>
             {
-                new string[]{"Coca Cola", "Coca Cola Ltd."},
-                new string[]{"Method", "Methods"},
-                new string[]{"Potato", "Ketchup"},
-                new string[]{"Potato", "Potato mix"}
+                new[]{"Coca Cola", "Coca Cola Ltd."},
+                new[]{"Method", "Methods"},
+                new[]{"Potato", "Ketchup"},
+                new[]{"Potato", "Potato mix"}
             };
 
             Stopwatch stopwatch = new Stopwatch();
