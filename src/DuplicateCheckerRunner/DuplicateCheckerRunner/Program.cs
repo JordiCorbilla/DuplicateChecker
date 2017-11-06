@@ -36,20 +36,46 @@ namespace DuplicateCheckerRunner
     {
         static void Main(string[] args)
         {
+            var spin = new ConsoleOutput();
             List<string[]> l = new List<string[]>
             {
                 new[]{"Coca Cola", "Coca Cola Ltd."},
                 new[]{"Method", "Methods"},
                 new[]{"Potato", "Ketchup"},
-                new[]{"Potato", "Potato mix"}
+                new[]{"Potato", "Potato mix"},
+                new[]{"Tarakan", "Potato mix"},
+                new[]{"Tenggarong", "Gorontalo"},
+                new[]{"Ambon", "Makasar"},
+                new[]{"Tual", "Manado"},
+                new[]{"Ternate", "Palu"},
+                new[]{"Tidore", "Pare-Pare"},
+                new[]{"Bima", "Palopo"},
+                new[]{"Mataram", "Tomohon"},
+                new[]{"Kupang", "Banda Aceh"},
+                new[]{"Atambua", "Potato mix"},
+                new[]{"Jayapura", "Potato mix"},
+                new[]{"Merauke", "Potato mix"},
+                new[]{"Kota Sorong", "Potato mix"},
+                new[]{"Monokwari", "Potato mix"},
+                new[]{"Bau-Bau", "Potato mix"},
+                new[]{"Bitung", "Potato mix"} 
             };
 
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
+            Console.Write("Calculating....");
+            List<string> output = new List<string>();
             foreach (string[] a in l)
             {
+                spin.Rotate();
                 int cost = LevenshteinDistance.Get(a[0], a[1]);
-                Console.WriteLine($"{a[0]} -> {a[1]} = {cost}");
+                output.Add($"{a[0]} -> {a[1]} = {cost}");
+            }
+
+            Console.WriteLine("");
+            foreach (var value in output)
+            {
+                Console.WriteLine($"{value}");
             }
             stopwatch.Stop();
             Console.WriteLine("Time elapsed: {0}", stopwatch.Elapsed);
