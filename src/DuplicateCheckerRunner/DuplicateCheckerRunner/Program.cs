@@ -89,7 +89,7 @@ namespace DuplicateCheckerRunner
             }
 
             Console.WriteLine("");
-            Console.WriteLine("Exact");
+            Console.WriteLine("Duplicates");
             foreach (var value in exact)
             {
                 Console.WriteLine($"{value.ToString()}");
@@ -106,12 +106,12 @@ namespace DuplicateCheckerRunner
             {
                 Console.WriteLine($"{value.ToString()}");
             }
-            Console.WriteLine("");
-            Console.WriteLine("Different");
-            foreach (var value in different)
-            {
-                Console.WriteLine($"{value.ToString()}");
-            }
+            //Console.WriteLine("");
+            //Console.WriteLine("Different");
+            //foreach (var value in different)
+            //{
+            //    Console.WriteLine($"{value.ToString()}");
+            //}
             stopwatch.Stop();
             Console.WriteLine("Time elapsed: {0}", stopwatch.Elapsed);
             Console.ReadKey();
