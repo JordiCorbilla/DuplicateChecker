@@ -31,20 +31,36 @@ namespace DuplicateCheckerLib
 {
     public class LevenshteinDistance
     {
-        public static int Get(string left, string right)
+        public static Match Get(string left, string right)
         {
             int leftLength = left.Length;
             int rightLength = right.Length;
+
+            Match match = new Match();
+            match.Type = MatchType.different;
 
             //Build the matrix for both words
             int[,] matrix = new int[leftLength + 1, rightLength + 1];
 
             // Base case, return the length of the strings
             if (leftLength == 0)
-                return rightLength;
+            {
+                match.Factor = rightLength;
+                return match;
+            }
 
             if (rightLength == 0)
-                return leftLength;
+            {
+                match.Factor = leftLength;
+                return match;
+            }
+
+            if (left.Equals(right)) //We have a duplicate
+            {
+                match.Factor = 0;
+                match.Type = MatchType.exact;
+                return match; //Exact match
+            }
 
             //Populate the first column and first row
             for (int i = 0; i <= leftLength; i++)
@@ -66,8 +82,37 @@ namespace DuplicateCheckerLib
                     matrix[i, j] = Math.Min(Math.Min(matrix[i - 1, j] + 1, matrix[i, j - 1] + 1), matrix[i - 1, j - 1] + cost);
                 }
             }
-            // Return the last item that contains the calculation
-            return matrix[leftLength, rightLength];
+
+            //Now check different scenarios
+            //If the result is the length of the difference, then it means that they are exactly the same but with some
+            //additional characters
+            var distance = matrix[leftLength, rightLength];
+            if (Math.Abs(leftLength-rightLength) == distance)
+            {
+                match.Factor = distance;
+                match.Type = MatchType.closefit;
+                return match;
+            } else
+            //If the distance is close to their lengths, let's say 80% then it's a close fit
+            if ((double)Math.Max(leftLength, rightLength) * 0.2 > (double)distance)
+            {
+                //It's still a close fit
+                match.Factor = distance;
+                match.Type = MatchType.closefit;
+                return match;
+            } else             //Let's say thet if it's a 60% close then it's a similar one
+            if ((double)Math.Max(leftLength, rightLength) * 0.4 > (double)distance)
+            {
+                match.Factor = distance;
+                match.Type = MatchType.similar;
+                return match;
+            } else
+            {
+                match.Factor = distance;
+                match.Type = MatchType.different;
+                // Return the last item that contains the calculation
+                return match;
+            }
         }
     }
 }

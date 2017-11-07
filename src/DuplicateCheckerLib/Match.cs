@@ -25,52 +25,13 @@
 //  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 //  POSSIBILITY OF SUCH DAMAGE.
 
-using DuplicateCheckerLib;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-
-namespace DuplicateCheckerRunner
+namespace DuplicateCheckerLib
 {
-    class Program
+    public class Match
     {
-        static void Main(string[] args)
-        {
-            var spin = new ConsoleOutput();
-            DataRepository data = new DataRepository();
-
-            Stopwatch stopwatch = new Stopwatch();
-            stopwatch.Start();
-            Console.Write("Calculating....");
-            List<Match> closeFit = new List<Match>();
-            List<Match> exact = new List<Match>();
-            List<Match> similar = new List<Match>();
-            List<Match> different = new List<Match>();
-
-            //Loop through all the data
-            foreach (string left in data.Get())
-            {
-                foreach (string right in data.Get())
-                {
-
-                }
-            }
-
-            foreach (string[] a in l)
-            {
-                spin.Rotate();
-                Match cost = LevenshteinDistance.Get(a[0], a[1]);
-                output.Add($"{a[0]} -> {a[1]} = {cost.Factor} {cost.Type}");
-            }
-
-            Console.WriteLine("");
-            foreach (var value in output)
-            {
-                Console.WriteLine($"{value}");
-            }
-            stopwatch.Stop();
-            Console.WriteLine("Time elapsed: {0}", stopwatch.Elapsed);
-            Console.ReadKey();
-        }
+        public int Factor { get; set; }
+        public MatchType Type { get; set; }
+        public string Left { get; set; }
+        public string Right { get; set; }
     }
 }
