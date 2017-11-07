@@ -46,27 +46,71 @@ namespace DuplicateCheckerRunner
             List<Match> exact = new List<Match>();
             List<Match> similar = new List<Match>();
             List<Match> different = new List<Match>();
+            Dictionary<string, bool> keys = new Dictionary<string, bool>();
 
             //Loop through all the data
-            foreach (string left in data.Get())
+            //Highly cpu intensive
+            foreach (Car left in data.Get())
             {
-                foreach (string right in data.Get())
+                foreach (Car right in data.Get())
                 {
+                    if (left.Id != right.Id)
+                    {
+                        string Id1 = $"{left.Id}-{right.Id}";
+                        string Id2 = $"{right.Id}-{left.Id}";
+                        bool value;
+                        if (!keys.TryGetValue(Id1, out value) && !keys.TryGetValue(Id2, out value))
+                        {
+                            //This will ensure that we only look at real matches and no duplicated entries
+                            keys.Add(Id1, true);
+                            keys.Add(Id2, true);
 
+                            spin.Rotate();
+                            Match cost = LevenshteinDistance.Get(left.Name, right.Name);
+                            switch (cost.Type)
+                            {
+                                case MatchType.closefit:
+                                    closeFit.Add(cost);
+                                    break;
+                                case MatchType.exact:
+                                    exact.Add(cost);
+                                    break;
+                                case MatchType.similar:
+                                    similar.Add(cost);
+                                    break;
+                                case MatchType.different:
+                                    different.Add(cost);
+                                    break;
+                            }
+
+                        }
+                    }
                 }
             }
 
-            foreach (string[] a in l)
-            {
-                spin.Rotate();
-                Match cost = LevenshteinDistance.Get(a[0], a[1]);
-                output.Add($"{a[0]} -> {a[1]} = {cost.Factor} {cost.Type}");
-            }
-
             Console.WriteLine("");
-            foreach (var value in output)
+            Console.WriteLine("Exact");
+            foreach (var value in exact)
             {
-                Console.WriteLine($"{value}");
+                Console.WriteLine($"{value.ToString()}");
+            }
+            Console.WriteLine("");
+            Console.WriteLine("Close Fit");
+            foreach (var value in closeFit)
+            {
+                Console.WriteLine($"{value.ToString()}");
+            }
+            Console.WriteLine("");
+            Console.WriteLine("Similar");
+            foreach (var value in similar)
+            {
+                Console.WriteLine($"{value.ToString()}");
+            }
+            Console.WriteLine("");
+            Console.WriteLine("Different");
+            foreach (var value in different)
+            {
+                Console.WriteLine($"{value.ToString()}");
             }
             stopwatch.Stop();
             Console.WriteLine("Time elapsed: {0}", stopwatch.Elapsed);

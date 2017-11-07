@@ -33,5 +33,12 @@ namespace DuplicateCheckerLib
         public MatchType Type { get; set; }
         public string Left { get; set; }
         public string Right { get; set; }
+
+        override
+        public string ToString()
+        {
+            return $"{Left}, {Right}, {Factor}, {Type}";
+        }
+        
     }
 }

@@ -37,6 +37,8 @@ namespace DuplicateCheckerLib
             int rightLength = right.Length;
 
             Match match = new Match();
+            match.Left = left;
+            match.Right = right;
             match.Type = MatchType.different;
 
             //Build the matrix for both words
