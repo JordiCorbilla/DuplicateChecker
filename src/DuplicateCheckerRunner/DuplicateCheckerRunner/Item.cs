@@ -25,41 +25,11 @@
 //  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 //  POSSIBILITY OF SUCH DAMAGE.
 
-using System;
-using System.Threading;
-
 namespace DuplicateCheckerRunner
 {
-    public class ConsoleOutput
+    public class Item
     {
-        private int _counter;
-
-        public void Rotate(string count)
-        {
-            _counter++;
-            string output = "";
-            switch (_counter % 4)
-            {
-                case 0:
-                    output = $"/  {count}";
-                    Console.Write(output); _counter = 0; break;
-                case 1:
-                    output = $"-  {count}";
-                    Console.Write(output); break;
-                case 2:
-                    output = $"\\  {count}";
-                    Console.Write(output); break;
-                case 3:
-                    output = $"|  {count}";
-                    Console.Write(output); break;
-            }
-            Thread.Sleep(100);
-            Console.SetCursorPosition(Console.CursorLeft - output.Length, Console.CursorTop);
-        }
-
-        public void Rotate()
-        {
-            Rotate("");
-        }
+        public int Id { get; set; }
+        public string Name { get; set; }
     }
 }

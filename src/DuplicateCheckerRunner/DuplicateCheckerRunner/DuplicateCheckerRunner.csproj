@@ -45,6 +45,7 @@
     <Compile Include="Car.cs" />
     <Compile Include="ConsoleOutput.cs" />
     <Compile Include="DataRepository.cs" />
+    <Compile Include="Item.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

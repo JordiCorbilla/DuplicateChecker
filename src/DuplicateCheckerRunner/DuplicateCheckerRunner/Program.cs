@@ -37,8 +37,8 @@ namespace DuplicateCheckerRunner
     {
         static void Main(string[] args)
         {
-            //Run();
-            RunParallel();
+            Run();
+            //RunParallel();
         }
 
         static void Run()
@@ -57,9 +57,10 @@ namespace DuplicateCheckerRunner
 
             //Loop through all the data
             //Highly cpu intensive
-            foreach (Car left in data.Get())
+            int count = 0;
+            foreach (Item left in data.GetComplex())
             {
-                foreach (Car right in data.Get())
+                foreach (Item right in data.GetComplex())
                 {
                     if (left.Id != right.Id)
                     {
@@ -72,8 +73,11 @@ namespace DuplicateCheckerRunner
                             keys.Add(Id1, true);
                             keys.Add(Id2, true);
 
-                            spin.Rotate();
+                            Stopwatch s1 = new Stopwatch();
+                            s1.Start();
                             Match cost = LevenshteinDistance.Get(left.Name, right.Name);
+                            s1.Stop();
+                            spin.Rotate($"{count++.ToString()} Time elapsed: {s1.Elapsed}" );
                             switch (cost.Type)
                             {
                                 case MatchType.closefit:
