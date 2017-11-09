@@ -29,21 +29,26 @@ using DuplicateCheckerLib;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace DuplicateCheckerRunner
 {
     class Program
     {
+        static readonly object _locker = new object();
+
         static void Main(string[] args)
         {
             Run();
+            //RunParallelMax();
             //RunParallel();
         }
 
         static void Run()
         {
-            var spin = new ConsoleOutput();
+            var output = new ConsoleOutput();
             DataRepository data = new DataRepository();
 
             Stopwatch stopwatch = new Stopwatch();
@@ -67,6 +72,7 @@ namespace DuplicateCheckerRunner
                         string Id1 = $"{left.Id}-{right.Id}";
                         string Id2 = $"{right.Id}-{left.Id}";
                         bool value;
+                        //only unique values
                         if (!keys.TryGetValue(Id1, out value) && !keys.TryGetValue(Id2, out value))
                         {
                             //This will ensure that we only look at real matches and no duplicated entries
@@ -76,8 +82,9 @@ namespace DuplicateCheckerRunner
                             Stopwatch s1 = new Stopwatch();
                             s1.Start();
                             Match cost = LevenshteinDistance.Get(left.Name, right.Name);
+                            count++;
                             s1.Stop();
-                            spin.Rotate($"{count++.ToString()} Time elapsed: {s1.Elapsed}" );
+                            //output.Rotate($"{count++.ToString()} Time elapsed: {s1.Elapsed}" );
                             switch (cost.Type)
                             {
                                 case MatchType.closefit:
@@ -99,24 +106,10 @@ namespace DuplicateCheckerRunner
                 }
             }
 
-            Console.WriteLine("");
-            Console.WriteLine("Duplicates");
-            foreach (var value in exact)
-            {
-                Console.WriteLine($"{value.ToString()}");
-            }
-            Console.WriteLine("");
-            Console.WriteLine("Close Fit");
-            foreach (var value in closeFit)
-            {
-                Console.WriteLine($"{value.ToString()}");
-            }
-            Console.WriteLine("");
-            Console.WriteLine("Similar");
-            foreach (var value in similar)
-            {
-                Console.WriteLine($"{value.ToString()}");
-            }
+            Console.WriteLine($"Number of items processed: {count++.ToString()}");
+            output.OutputResults("Duplicates", exact);
+            output.OutputResults("Close Fit", closeFit);
+            output.OutputResults("Similar", similar);
             //Console.WriteLine("");
             //Console.WriteLine("Different");
             //foreach (var value in different)
@@ -125,6 +118,98 @@ namespace DuplicateCheckerRunner
             //}
             stopwatch.Stop();
             Console.WriteLine("Time elapsed: {0}", stopwatch.Elapsed);
+            Console.ReadKey();
+        }
+
+        static void RunParallelMax()
+        {
+            var degreeOfParallelism = Environment.ProcessorCount;
+            var output = new ConsoleOutput();
+            DataRepository data = new DataRepository();
+            
+
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+            Console.Write("Calculating....");
+            List<Match> closeFit = new List<Match>();
+            List<Match> exact = new List<Match>();
+            List<Match> similar = new List<Match>();
+            List<Match> different = new List<Match>();
+            Dictionary<string, bool> keys = new Dictionary<string, bool>();
+
+            //Loop through all the data
+            //Highly cpu intensive
+            int count = 0;
+
+            //Create a set of tasks to be run (max 8 as per my cpu cores)
+            var tasks = new Task[degreeOfParallelism];
+            int taskNumber = 0;
+            foreach (Item left in data.GetComplex())
+            {
+                var last = data.GetComplex().Last();
+                foreach (Item right in data.GetComplex())
+                {
+
+                    if (left.Id != right.Id)
+                    {
+                        string Id1 = $"{left.Id}-{right.Id}";
+                        string Id2 = $"{right.Id}-{left.Id}";
+                        bool value;
+                        //only unique values
+                        if (!keys.TryGetValue(Id1, out value) && !keys.TryGetValue(Id2, out value))
+                        {
+                            //This will ensure that we only look at real matches and no duplicated entries
+                            keys.Add(Id1, true);
+                            keys.Add(Id2, true);
+
+                            tasks[taskNumber] = Task.Factory.StartNew(() =>
+                            {
+                                //Stopwatch s1 = new Stopwatch();
+                                //s1.Start();
+                                Match cost = LevenshteinDistance.Get(left.Name, right.Name);
+                                count++;
+                                //s1.Stop();
+                                //Monitor.Enter(_locker);
+                                //output.Rotate($"{count++.ToString()} Time elapsed: {s1.Elapsed}");
+                                switch (cost.Type)
+                                {
+                                    case MatchType.closefit:
+                                        closeFit.Add(cost);
+                                        break;
+                                    case MatchType.exact:
+                                        exact.Add(cost);
+                                        break;
+                                    case MatchType.similar:
+                                        similar.Add(cost);
+                                        break;
+                                    case MatchType.different:
+                                        different.Add(cost);
+                                        break;
+                                }
+                                //Monitor.Exit(_locker);
+                            });
+                            taskNumber++;
+                        }
+                    }
+                    if (taskNumber == degreeOfParallelism) { 
+                        Task.WaitAll(tasks);
+                        taskNumber = 0;
+                    }
+                    if (right.Equals(last))
+                    {
+                        Task.WaitAll(tasks);
+                        taskNumber = 0;
+                    }
+                }
+            }
+
+            Console.WriteLine($"Number of items processed: {count++.ToString()}");
+            output.OutputResults("Duplicates", exact);
+            output.OutputResults("Close Fit", closeFit);
+            output.OutputResults("Similar", similar);
+            stopwatch.Stop();
+            Console.WriteLine("Time elapsed: {0}", stopwatch.Elapsed);
+
             Console.ReadKey();
         }
 

@@ -25,7 +25,9 @@
 //  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 //  POSSIBILITY OF SUCH DAMAGE.
 
+using DuplicateCheckerLib;
 using System;
+using System.Collections.Generic;
 using System.Threading;
 
 namespace DuplicateCheckerRunner
@@ -60,6 +62,16 @@ namespace DuplicateCheckerRunner
         public void Rotate()
         {
             Rotate("");
+        }
+
+        public void OutputResults(string name, List<Match> list)
+        {
+            Console.WriteLine("");
+            Console.WriteLine($"{name} ({list.Count})");
+            foreach (var value in list)
+            {
+                Console.WriteLine($"{value.ToString()}");
+            }
         }
     }
 }
