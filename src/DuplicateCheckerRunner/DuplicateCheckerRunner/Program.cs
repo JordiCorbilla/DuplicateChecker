@@ -25,26 +25,18 @@
 //  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 //  POSSIBILITY OF SUCH DAMAGE.
 
-using DuplicateCheckerLib;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 using Unity;
 
 namespace DuplicateCheckerRunner
 {
     class Program
     {
-        
-
         static void Main(string[] args)
         {
             var container = new UnityContainer();
             container.RegisterType<IDataRepository, DataRepository>();
             Runner runner = new Runner(container.Resolve<IDataRepository>());
-            runner.Run();
+            runner.RunFromDB();
         }
     }
 }

@@ -11,5 +11,6 @@ namespace DuplicateCheckerRunner
         List<Car> Get();
         List<Item> GetComplex();
         List<string[]> GetAll();
+        List<Item> LoadFromTable();
     }
 }

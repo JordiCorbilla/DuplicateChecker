@@ -90,6 +90,75 @@ namespace DuplicateCheckerRunner
             Console.ReadKey();
         }
 
+        public void RunFromDB()
+        {
+            var output = new ConsoleOutput();
+
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+            Console.Write("Calculating....");
+            List<Match> closeFit = new List<Match>();
+            List<Match> exact = new List<Match>();
+            List<Match> similar = new List<Match>();
+            List<Match> different = new List<Match>();
+            Dictionary<string, bool> keys = new Dictionary<string, bool>();
+
+            //Loop through all the data
+            //Highly cpu intensive
+            int count = 0;
+            List<Item> repository = _dataRepository.LoadFromTable();
+            foreach (Item left in repository)
+            {
+                foreach (Item right in repository)
+                {
+                    if (left.Id != right.Id)
+                    {
+                        string Id1 = $"{left.Id}-{right.Id}";
+                        string Id2 = $"{right.Id}-{left.Id}";
+                        bool value;
+                        //only unique values
+                        if (!keys.TryGetValue(Id1, out value) && !keys.TryGetValue(Id2, out value))
+                        {
+                            //This will ensure that we only look at real matches and no duplicated entries
+                            keys.Add(Id1, true);
+                            keys.Add(Id2, true);
+
+                            Stopwatch s1 = new Stopwatch();
+                            s1.Start();
+                            Match cost = LevenshteinDistance.Get(left.Name, right.Name);
+                            count++;
+                            s1.Stop();
+                            //output.Rotate($"{count++.ToString()} Time elapsed: {s1.Elapsed}" );
+                            switch (cost.Type)
+                            {
+                                case MatchType.closefit:
+                                    closeFit.Add(cost);
+                                    break;
+                                case MatchType.exact:
+                                    exact.Add(cost);
+                                    break;
+                                case MatchType.similar:
+                                    similar.Add(cost);
+                                    break;
+                                case MatchType.different:
+                                    different.Add(cost);
+                                    break;
+                            }
+
+                        }
+                    }
+                }
+            }
+
+            Console.WriteLine($"Number of items processed: {count++.ToString()}");
+            output.OutputResults("Duplicates", exact);
+            output.OutputResults("Close Fit", closeFit);
+            output.OutputResults("Similar", similar);
+            stopwatch.Stop();
+            Console.WriteLine("Time elapsed: {0}", stopwatch.Elapsed);
+            Console.ReadKey();
+        }
+
         public void RunParallelMax()
         {
             var degreeOfParallelism = Environment.ProcessorCount;

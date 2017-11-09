@@ -25,7 +25,9 @@
 //  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 //  POSSIBILITY OF SUCH DAMAGE.
 
+using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 
 namespace DuplicateCheckerRunner
 {
@@ -137,7 +139,7 @@ namespace DuplicateCheckerRunner
             list.Add(new Item { Id = 69, Name = "Heinrich Carl Walter GmbH u. Co. KG." });
             list.Add(new Item { Id = 70, Name = "VONTOBEL FUND - VONTOBEL FUND UNCONVENTIONAL ENERGY" });
             list.Add(new Item { Id = 71, Name = "VONTOBEL FUND - VONTOBEL FUND GLOBAL CORPORATE BOND PRIME" });
-            return list; 
+            return list;
         }
 
         public List<string[]> GetAll()
@@ -166,6 +168,30 @@ namespace DuplicateCheckerRunner
                 new[]{"Bitung", "Potato mix"}
             };
             return l;
+        }
+
+        public List<Item> LoadFromTable()
+        {
+            List<Item> items = new List<Item>();
+            using (SqlConnection connection = new SqlConnection("Server=localhost;Database=xxx;Trusted_Connection=True;"))
+            using (SqlCommand cmd = new SqlCommand("select id, name from x", connection))
+            {
+                connection.Open();
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            Item item = new Item();
+                            item.Id = reader.GetInt32(reader.GetOrdinal("id"));
+                            item.Name = reader.GetString(reader.GetOrdinal("name"));
+                            items.Add(item);
+                        }
+                    }
+                }
+            }
+            return items;
         }
     }
 }
