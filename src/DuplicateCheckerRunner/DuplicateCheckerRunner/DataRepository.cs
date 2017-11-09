@@ -29,7 +29,7 @@ using System.Collections.Generic;
 
 namespace DuplicateCheckerRunner
 {
-    public class DataRepository
+    public class DataRepository : IDataRepository
     {
         public List<Car> Get()
         {
