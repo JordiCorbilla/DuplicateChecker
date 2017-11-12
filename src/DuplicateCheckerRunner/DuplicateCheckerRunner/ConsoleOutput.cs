@@ -39,10 +39,11 @@ namespace DuplicateCheckerRunner
 
         public void Rotate(int count, int total, string text)
         {
-            Console.OutputEncoding = System.Text.Encoding.GetEncoding(28591);
+            Console.OutputEncoding = Encoding.UTF8;
             _counter++;
             string output = "";
             int percentage = (int)((double)((double)count / (double)total) * 100.0);
+            Console.ForegroundColor = ConsoleColor.Green;
             switch (_counter % 4)
             {
                 case 0:
@@ -60,6 +61,7 @@ namespace DuplicateCheckerRunner
             }
             Thread.Sleep(100);
             Console.SetCursorPosition(Console.CursorLeft - output.Length, Console.CursorTop);
+            Console.ResetColor();
         }
 
         //public void Rotate(int count, int total, string text)
@@ -91,9 +93,9 @@ namespace DuplicateCheckerRunner
                 case 2:
                 case 3:
                 case 4:
-                case 5:
-                    numberToProcess = numberToProcess - lastDigit;
+                    numberToProcess = numberToProcess + (5 - lastDigit);
                     break;
+                case 5:
                 case 6:
                 case 7:
                 case 8:
@@ -103,7 +105,7 @@ namespace DuplicateCheckerRunner
             }
             for (int i = 0; i < numberToProcess; i = i + 5)
             {
-                progress += $"{(char)219}";
+                progress += $"\u25A0";
             }
             string dots = "";
             for(int i=0; i < (100 - numberToProcess); i=i+5)
