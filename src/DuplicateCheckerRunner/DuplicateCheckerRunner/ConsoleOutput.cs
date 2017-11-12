@@ -28,6 +28,7 @@
 using DuplicateCheckerLib;
 using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Threading;
 
 namespace DuplicateCheckerRunner
@@ -36,33 +37,35 @@ namespace DuplicateCheckerRunner
     {
         private int _counter;
 
-        public void Rotate(string count)
+        public void Rotate(int count, int total, string text)
         {
+            Console.OutputEncoding = System.Text.Encoding.GetEncoding(28591);
             _counter++;
             string output = "";
+            int percentage = (int)((double)((double)count / (double)total) * 100.0);
             switch (_counter % 4)
             {
                 case 0:
-                    output = $"/  {count}";
+                    output = $"{GetProgressBar(percentage)} /  {percentage}% {count} {text}";
                     Console.Write(output); _counter = 0; break;
                 case 1:
-                    output = $"-  {count}";
+                    output = $"{GetProgressBar(percentage)} -  {percentage}% {count} {text}";
                     Console.Write(output); break;
                 case 2:
-                    output = $"\\  {count}";
+                    output = $"{GetProgressBar(percentage)} \\  {percentage}% {count} {text}";
                     Console.Write(output); break;
                 case 3:
-                    output = $"|  {count}";
+                    output = $"{GetProgressBar(percentage)} |  {percentage}% {count} {text}";
                     Console.Write(output); break;
             }
             Thread.Sleep(100);
             Console.SetCursorPosition(Console.CursorLeft - output.Length, Console.CursorTop);
         }
 
-        public void Rotate()
-        {
-            Rotate("");
-        }
+        //public void Rotate(int count, int total, string text)
+        //{
+        //    Rotate(count, total, text);
+        //}
 
         public void OutputResults(string name, List<Match> list)
         {
@@ -72,6 +75,42 @@ namespace DuplicateCheckerRunner
             {
                 Console.WriteLine($"{value.ToString()}");
             }
+        }
+
+        public string GetProgressBar(int percentage)
+        {
+            string progress ="";
+            //Percentage needs to be adapted to be a value of 5
+            char num = percentage.ToString()[percentage.ToString().Length - 1];
+            int lastDigit = int.Parse(num.ToString());
+            int numberToProcess = percentage;
+            switch (lastDigit)
+            {
+                case 0:
+                case 1:
+                case 2:
+                case 3:
+                case 4:
+                case 5:
+                    numberToProcess = numberToProcess - lastDigit;
+                    break;
+                case 6:
+                case 7:
+                case 8:
+                case 9:
+                    numberToProcess = numberToProcess + (10 - lastDigit);
+                    break;
+            }
+            for (int i = 0; i < numberToProcess; i = i + 5)
+            {
+                progress += $"{(char)219}";
+            }
+            string dots = "";
+            for(int i=0; i < (100 - numberToProcess); i=i+5)
+            {
+                dots += ".";
+            }
+            return $"[{progress}{dots}]";
         }
     }
 }

@@ -22,13 +22,16 @@ namespace DuplicateCheckerRunner
 
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
-            Console.Write("Calculating....");
             List<Match> closeFit = new List<Match>();
             List<Match> exact = new List<Match>();
             List<Match> similar = new List<Match>();
             List<Match> different = new List<Match>();
             Dictionary<string, bool> keys = new Dictionary<string, bool>();
 
+            //Give me the overal number of calculations here
+            int repetitions = MathLib.NumberOfPermutationsNoRepetition(_dataRepository.GetComplex().Count-1);
+            Console.WriteLine($"Number of items to calculate: {repetitions.ToString()}");
+            Console.WriteLine("Calculating....");
             //Loop through all the data
             //Highly cpu intensive
             int count = 0;
@@ -53,7 +56,7 @@ namespace DuplicateCheckerRunner
                             Match cost = LevenshteinDistance.Get(left.Name, right.Name);
                             count++;
                             s1.Stop();
-                            //output.Rotate($"{count++.ToString()} Time elapsed: {s1.Elapsed}" );
+                            output.Rotate(count, repetitions, $"Time elapsed: {s1.Elapsed}" );
                             switch (cost.Type)
                             {
                                 case MatchType.closefit:
@@ -283,7 +286,7 @@ namespace DuplicateCheckerRunner
                             keys.Add(Id1, true);
                             keys.Add(Id2, true);
 
-                            spin.Rotate();
+                            //spin.Rotate();
                             tasks.Add(i, new Task(() => {
                                 Match cost = LevenshteinDistance.Get(left.Name, right.Name);
                                 switch (cost.Type)

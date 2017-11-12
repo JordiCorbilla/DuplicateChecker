@@ -25,18 +25,30 @@
 //  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 //  POSSIBILITY OF SUCH DAMAGE.
 
-using Unity;
-
-namespace DuplicateCheckerRunner
+namespace DuplicateCheckerLib
 {
-    class Program
+    public static class MathLib
     {
-        static void Main(string[] args)
+        /// <summary>
+        /// It will give the number of permutations without repetition
+        /// Given the set abcd
+        /// the number of permutations without repetition are:
+        /// ab bc cd
+        /// ac bd
+        /// ad
+        /// 3 + 2 + 1 = 6
+        /// </summary>
+        /// <param name="i"></param>
+        /// <returns>Number of permutations without repetition</returns>
+        public static int NumberOfPermutationsNoRepetition(int i)
         {
-            var container = new UnityContainer();
-            container.RegisterType<IDataRepository, DataRepository>();
-            Runner runner = new Runner(container.Resolve<IDataRepository>());
-            runner.Run();
+            var j = i;
+            var res = 0;
+            while (j > 0)
+            {
+                res += j--;
+            }
+            return res;
         }
     }
 }

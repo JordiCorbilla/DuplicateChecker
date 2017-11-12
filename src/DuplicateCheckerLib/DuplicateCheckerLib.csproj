@@ -43,6 +43,7 @@
     <Compile Include="LevenshteinDistance.cs" />
     <Compile Include="Match.cs" />
     <Compile Include="MatchType.cs" />
+    <Compile Include="MathLib.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
