@@ -47,9 +47,24 @@ namespace DuplicateCheckerRunner
             //Test using the new library
             Processor p = new Processor(repo.GetComplex());
             p.FindDuplicates();
-            Console.WriteLine($"Duplicates {p.exact.Count}");
-            Console.WriteLine($"Close Fit {p.closeFit.Count}");
-            Console.WriteLine($"Similar {p.similar.Count}");
+            Console.WriteLine("");
+            Console.WriteLine("Duplicates");
+            foreach (var value in p.exact)
+            {
+                Console.WriteLine($"{value.ToString()}");
+            }
+            Console.WriteLine("");
+            Console.WriteLine("Close Fit");
+            foreach (var value in p.closeFit)
+            {
+                Console.WriteLine($"{value.ToString()}");
+            }
+            Console.WriteLine("");
+            Console.WriteLine("Similar");
+            foreach (var value in p.similar)
+            {
+                Console.WriteLine($"{value.ToString()}");
+            }
             stopwatch.Stop();
             Console.WriteLine("Time elapsed: {0}", stopwatch.Elapsed);
             Console.ReadKey();

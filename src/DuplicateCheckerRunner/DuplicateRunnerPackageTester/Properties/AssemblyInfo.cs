@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("DuplicateCheckerLib")]
+[assembly: AssemblyTitle("DuplicateRunnerPackageTester")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("DuplicateCheckerLib")]
-[assembly: AssemblyCopyright("Copyright ©  Jordi Corbilla 2018")]
+[assembly: AssemblyProduct("DuplicateRunnerPackageTester")]
+[assembly: AssemblyCopyright("Copyright ©  2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("c458e29c-af04-49de-8235-ef8be31bf428")]
+[assembly: Guid("78e46ead-a3c0-4e54-9315-fd7e12b98dee")]
 
 // Version information for an assembly consists of the following four values:
 //
