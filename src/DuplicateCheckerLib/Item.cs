@@ -1,4 +1,4 @@
-﻿//  Copyright (c) 2017, Jordi Corbilla
+﻿//  Copyright (c) 2018, Jordi Corbilla
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -25,7 +25,7 @@
 //  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 //  POSSIBILITY OF SUCH DAMAGE.
 
-namespace DuplicateCheckerRunner
+namespace DuplicateCheckerLib
 {
     public class Item
     {

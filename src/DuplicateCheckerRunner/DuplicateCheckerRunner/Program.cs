@@ -25,6 +25,9 @@
 //  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 //  POSSIBILITY OF SUCH DAMAGE.
 
+using DuplicateCheckerLib;
+using System;
+using System.Diagnostics;
 using Unity;
 
 namespace DuplicateCheckerRunner
@@ -35,8 +38,23 @@ namespace DuplicateCheckerRunner
         {
             var container = new UnityContainer();
             container.RegisterType<IDataRepository, DataRepository>();
-            Runner runner = new Runner(container.Resolve<IDataRepository>());
-            runner.Run();
+
+            IDataRepository repo = container.Resolve<IDataRepository>();
+
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+            Console.Write("Calculating....");
+            //Test using the new library
+            Processor p = new Processor(repo.GetComplex());
+            p.FindDuplicates();
+            Console.WriteLine($"Duplicates {p.exact.Count}");
+            Console.WriteLine($"Close Fit {p.closeFit.Count}");
+            Console.WriteLine($"Similar {p.similar.Count}");
+            stopwatch.Stop();
+            Console.WriteLine("Time elapsed: {0}", stopwatch.Elapsed);
+            Console.ReadKey();
+            //Runner runner = new Runner(container.Resolve<IDataRepository>());
+            //runner.Run();
         }
     }
 }
