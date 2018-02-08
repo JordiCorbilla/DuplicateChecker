@@ -29,7 +29,7 @@ using System;
 
 namespace DuplicateCheckerLib
 {
-    public class LevenshteinDistance
+    public static class LevenshteinDistance
     {
         public static Match Get(string left, string right)
         {
