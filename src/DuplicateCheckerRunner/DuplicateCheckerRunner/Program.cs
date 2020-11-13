@@ -34,7 +34,7 @@ namespace DuplicateCheckerRunner
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             var container = new UnityContainer();
             container.RegisterType<IDataRepository, DataRepository>();
