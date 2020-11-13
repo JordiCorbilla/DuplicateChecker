@@ -42,7 +42,7 @@ namespace DuplicateCheckerRunner
             Console.OutputEncoding = Encoding.UTF8;
             _counter++;
             string output = "";
-            int percentage = (int)((double)((double)count / (double)total) * 100.0);
+            int percentage = (int)(count / (double)total * 100.0);
             Console.ForegroundColor = ConsoleColor.Green;
             switch (_counter % 4)
             {
@@ -64,18 +64,13 @@ namespace DuplicateCheckerRunner
             Console.ResetColor();
         }
 
-        //public void Rotate(int count, int total, string text)
-        //{
-        //    Rotate(count, total, text);
-        //}
-
         public void OutputResults(string name, List<Match> list)
         {
             Console.WriteLine("");
             Console.WriteLine($"{name} ({list.Count})");
             foreach (var value in list)
             {
-                Console.WriteLine($"{value.ToString()}");
+                Console.WriteLine($"{value}");
             }
         }
 
@@ -105,7 +100,7 @@ namespace DuplicateCheckerRunner
             }
             for (int i = 0; i < numberToProcess; i = i + 5)
             {
-                progress += $"\u25A0";
+                progress += "\u25A0";
             }
             string dots = "";
             for(int i=0; i < (100 - numberToProcess); i=i+5)

@@ -51,25 +51,23 @@ namespace DuplicateCheckerRunner
             Console.WriteLine("Duplicates");
             foreach (var value in p.Exact)
             {
-                Console.WriteLine($"{value.ToString()}");
+                Console.WriteLine($"{value}");
             }
             Console.WriteLine("");
             Console.WriteLine("Close Fit");
             foreach (var value in p.CloseFit)
             {
-                Console.WriteLine($"{value.ToString()}");
+                Console.WriteLine($"{value}");
             }
             Console.WriteLine("");
             Console.WriteLine("Similar");
             foreach (var value in p.Similar)
             {
-                Console.WriteLine($"{value.ToString()}");
+                Console.WriteLine($"{value}");
             }
             stopwatch.Stop();
             Console.WriteLine("Time elapsed: {0}", stopwatch.Elapsed);
             Console.ReadKey();
-            //Runner runner = new Runner(container.Resolve<IDataRepository>());
-            //runner.Run();
         }
     }
 }
