@@ -29,9 +29,9 @@ namespace DuplicateCheckerLib
 {
     public enum MatchType
     {
-        exact,
-        closefit,
-        similar,
-        different
+        Exact,
+        CloseFit,
+        Similar,
+        Different
     }
 }

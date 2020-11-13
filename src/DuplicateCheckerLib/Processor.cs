@@ -31,19 +31,19 @@ namespace DuplicateCheckerLib
 {
     public class Processor
     {
-        public List<Match> closeFit;
-        public List<Match> exact;
-        public List<Match> similar;
-        public List<Match> different;
-        private List<Item> repository;
+        public List<Match> CloseFit;
+        public List<Match> Exact;
+        public List<Match> Similar;
+        public List<Match> Different;
+        private readonly List<Item> _repository;
 
         public Processor(List<Item> items)
         {
-            closeFit = new List<Match>();
-            exact = new List<Match>();
-            similar = new List<Match>();
-            different = new List<Match>();
-            repository = items;
+            CloseFit = new List<Match>();
+            Exact = new List<Match>();
+            Similar = new List<Match>();
+            Different = new List<Match>();
+            _repository = items;
         }
 
         public void FindDuplicates()
@@ -52,38 +52,35 @@ namespace DuplicateCheckerLib
 
             //Loop through all the data
             //Highly cpu intensive
-            int count = 0;
-            foreach (Item left in repository)
+            foreach (Item left in _repository)
             {
-                foreach (Item right in repository)
+                foreach (Item right in _repository)
                 {
                     if (left.Id != right.Id)
                     {
-                        string Id1 = $"{left.Id}-{right.Id}";
-                        string Id2 = $"{right.Id}-{left.Id}";
-                        bool value;
+                        string id1 = $"{left.Id}-{right.Id}";
+                        string id2 = $"{right.Id}-{left.Id}";
                         //only unique values
-                        if (!keys.TryGetValue(Id1, out value) && !keys.TryGetValue(Id2, out value))
+                        if (!keys.TryGetValue(id1, out _) && !keys.TryGetValue(id2, out _))
                         {
                             //This will ensure that we only look at real matches and no duplicated entries
-                            keys.Add(Id1, true);
-                            keys.Add(Id2, true);
+                            keys.Add(id1, true);
+                            keys.Add(id2, true);
 
                             Match cost = LevenshteinDistance.Get(left.Name, right.Name);
-                            count++;
                             switch (cost.Type)
                             {
-                                case MatchType.closefit:
-                                    closeFit.Add(cost);
+                                case MatchType.CloseFit:
+                                    CloseFit.Add(cost);
                                     break;
-                                case MatchType.exact:
-                                    exact.Add(cost);
+                                case MatchType.Exact:
+                                    Exact.Add(cost);
                                     break;
-                                case MatchType.similar:
-                                    similar.Add(cost);
+                                case MatchType.Similar:
+                                    Similar.Add(cost);
                                     break;
-                                case MatchType.different:
-                                    different.Add(cost);
+                                case MatchType.Different:
+                                    Different.Add(cost);
                                     break;
                             }
 

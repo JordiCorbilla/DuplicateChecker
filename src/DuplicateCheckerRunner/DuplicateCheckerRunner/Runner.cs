@@ -59,16 +59,16 @@ namespace DuplicateCheckerRunner
                             output.Rotate(count, repetitions, $"Time elapsed: {s1.Elapsed}" );
                             switch (cost.Type)
                             {
-                                case MatchType.closefit:
+                                case MatchType.CloseFit:
                                     closeFit.Add(cost);
                                     break;
-                                case MatchType.exact:
+                                case MatchType.Exact:
                                     exact.Add(cost);
                                     break;
-                                case MatchType.similar:
+                                case MatchType.Similar:
                                     similar.Add(cost);
                                     break;
-                                case MatchType.different:
+                                case MatchType.Different:
                                     different.Add(cost);
                                     break;
                             }
@@ -134,16 +134,16 @@ namespace DuplicateCheckerRunner
                             //output.Rotate($"{count++.ToString()} Time elapsed: {s1.Elapsed}" );
                             switch (cost.Type)
                             {
-                                case MatchType.closefit:
+                                case MatchType.CloseFit:
                                     closeFit.Add(cost);
                                     break;
-                                case MatchType.exact:
+                                case MatchType.Exact:
                                     exact.Add(cost);
                                     break;
-                                case MatchType.similar:
+                                case MatchType.Similar:
                                     similar.Add(cost);
                                     break;
-                                case MatchType.different:
+                                case MatchType.Different:
                                     different.Add(cost);
                                     break;
                             }
@@ -212,16 +212,16 @@ namespace DuplicateCheckerRunner
                                 //output.Rotate($"{count++.ToString()} Time elapsed: {s1.Elapsed}");
                                 switch (cost.Type)
                                 {
-                                    case MatchType.closefit:
+                                    case MatchType.CloseFit:
                                         closeFit.Add(cost);
                                         break;
-                                    case MatchType.exact:
+                                    case MatchType.Exact:
                                         exact.Add(cost);
                                         break;
-                                    case MatchType.similar:
+                                    case MatchType.Similar:
                                         similar.Add(cost);
                                         break;
-                                    case MatchType.different:
+                                    case MatchType.Different:
                                         different.Add(cost);
                                         break;
                                 }
@@ -291,16 +291,16 @@ namespace DuplicateCheckerRunner
                                 Match cost = LevenshteinDistance.Get(left.Name, right.Name);
                                 switch (cost.Type)
                                 {
-                                    case MatchType.closefit:
+                                    case MatchType.CloseFit:
                                         closeFit.Add(cost);
                                         break;
-                                    case MatchType.exact:
+                                    case MatchType.Exact:
                                         exact.Add(cost);
                                         break;
-                                    case MatchType.similar:
+                                    case MatchType.Similar:
                                         similar.Add(cost);
                                         break;
-                                    case MatchType.different:
+                                    case MatchType.Different:
                                         different.Add(cost);
                                         break;
                                 }

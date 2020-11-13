@@ -49,19 +49,19 @@ namespace DuplicateCheckerRunner
             p.FindDuplicates();
             Console.WriteLine("");
             Console.WriteLine("Duplicates");
-            foreach (var value in p.exact)
+            foreach (var value in p.Exact)
             {
                 Console.WriteLine($"{value.ToString()}");
             }
             Console.WriteLine("");
             Console.WriteLine("Close Fit");
-            foreach (var value in p.closeFit)
+            foreach (var value in p.CloseFit)
             {
                 Console.WriteLine($"{value.ToString()}");
             }
             Console.WriteLine("");
             Console.WriteLine("Similar");
-            foreach (var value in p.similar)
+            foreach (var value in p.Similar)
             {
                 Console.WriteLine($"{value.ToString()}");
             }
