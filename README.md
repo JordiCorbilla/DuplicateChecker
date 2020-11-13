@@ -62,6 +62,3 @@ Camaro, Camry, 2, similar
 Camry, Carry, 1, similar
 Caravana, Caravella, 3, similar
 `````
-
-Nuget Package can be found here:
-https://www.nuget.org/packages/Thundax.DuplicateCheckerLib/1.0.0#
